@@ -30,7 +30,7 @@ def live_video(camera_port=0):
     video_capture.release()
     cv2.destroyAllWindows()
 
-
+# TODO: insert rgb values of lower and upper threshold
 def process_image(frame):
     kernel = np.ones((1, 1), np.uint8)
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
