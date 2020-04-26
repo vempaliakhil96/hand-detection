@@ -3,3 +3,6 @@
 *.jpg
 **/.DS_Store
 .vscode/
+/images
+/__pycache__
+*.pickle
