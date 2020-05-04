@@ -16,7 +16,9 @@ class GesturePrediction:
         loaded_model.load_weights("model_weights.h5")
         self.model = loaded_model
         print("Loaded model from disk")
-        self.inv_gestures = {1: 'open_hand', 2: 'close_fist', 0: 'null'}
+        self.gestures = {'high_five': 1, 'victory_sign': 2, 'index_finger': 3, 'shaka_sign': 4, 'horns': 5, 'loser': 6,
+                         'null': 0}
+        self.inv_gestures = {v: k for k, v in self.gestures.items()}
         self.image_cleaner = CleanImage()
 
     def live_video(self):
@@ -55,7 +57,7 @@ class GesturePrediction:
         roi_copy = copy.deepcopy(roi)
         roi = np.stack((roi, roi_copy, roi_copy), axis=3)
         prediction = self.model.predict(roi)[0]
-        if np.max(prediction) > 0.3:
+        if np.max(prediction) > 0.05:
             prediction = self.inv_gestures[int(np.argmax(prediction))]
         else:
             prediction = self.inv_gestures[0]
