@@ -61,6 +61,7 @@ class GesturePrediction:
             prediction = self.inv_gestures[int(np.argmax(prediction))]
         else:
             prediction = self.inv_gestures[0]
+        print(prediction)
         return prediction
 
 

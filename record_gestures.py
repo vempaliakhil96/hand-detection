@@ -10,6 +10,7 @@ def live_video(gesture_name):
     t1 = time.time()
     video_capture = cv2.VideoCapture(0)
     capture_background_flag = True
+    capture_flag = False
     while True:
         t2 = time.time()
         ret, frame = video_capture.read()
@@ -27,6 +28,8 @@ def live_video(gesture_name):
         if not os.path.isdir("images/" + gesture_name):
             os.mkdir("images/" + gesture_name)
         if cv2.waitKey(1) & 0xFF == ord('c'):
+            capture_flag = not capture_flag
+        if capture_flag:
             cv2.imwrite("images/" + gesture_name + "/" + gesture_name + "_" + str(int(t2)) + ".jpg", frame)
             cv2.putText(frame, f"Gesture Captured !", (0, 60),
                         image_cleaner.font, image_cleaner.fontScale, (255, 255, 255))
@@ -41,4 +44,4 @@ def live_video(gesture_name):
 
 
 if __name__ == '__main__':
-    live_video("loser")
+    live_video("null")
