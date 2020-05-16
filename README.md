@@ -1,7 +1,17 @@
 ## hand-gesture-recognition
 
+[![image](https://img.shields.io/pypi/pyversions/conference-radar.svg)](https://github.com/vempaliakhil96/hand-detection)
 
-### Requirements
-* Python 3.6+
-* cv2
-* time
+## Installation
+
+You can simply use pip to install `hand-gesture-recognition`:
+
+<pre>
+$ pip install *INSERT*
+</pre>
+
+## Features
+
+## TroubleShooting
+
+## License
