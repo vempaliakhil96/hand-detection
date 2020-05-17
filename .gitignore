@@ -8,3 +8,6 @@
 *.pickle
 **/config/
 **/__pycache__/
+variables_pickle.zip
+variables.pickle
+variables.pickle.zip

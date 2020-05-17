@@ -6,7 +6,7 @@ import copy
 import numpy as np
 
 
-class GesturePrediction:
+class GesturePrediction :
     def __init__(self):
         json_file = open('model.json', 'r')
         loaded_model_json = json_file.read()
