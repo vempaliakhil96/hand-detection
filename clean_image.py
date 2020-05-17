@@ -12,7 +12,7 @@ class CleanImage:
         self.blurValue = 31  # GaussianBlur parameter
         self.bgSubThreshold = 50
         self.image_size = (224, 224)
-        self.learningRate = 0.01
+        self.learningRate = 0.1
         self.font = cv2.FONT_HERSHEY_SIMPLEX
         self.fontScale = 1
         self.thickness = 2
