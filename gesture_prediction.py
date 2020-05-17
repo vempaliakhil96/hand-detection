@@ -9,12 +9,12 @@ import keyboard
 
 class GesturePrediction :
     def __init__(self):
-        json_file = open('model.json', 'r')
+        json_file = open('model_v1-0.json', 'r')
         loaded_model_json = json_file.read()
         json_file.close()
         loaded_model = model_from_json(loaded_model_json)
         # load weights into new model
-        loaded_model.load_weights("model_weights.h5")
+        loaded_model.load_weights("model_weights_v1-0.h5")
         self.model = loaded_model
         print("Loaded model from disk")
         self.gestures = {'high_five': 1, 'null': 0}
@@ -25,6 +25,7 @@ class GesturePrediction :
         t1 = time.time()
         video_capture = cv2.VideoCapture(0)
         capture_background_flag = True
+        count = 0
         while True:
             t2 = time.time()
             ret, self.frame = video_capture.read()
@@ -40,9 +41,15 @@ class GesturePrediction :
             self.image_cleaner.process()
             self.frame = self.image_cleaner.frame
             prediction = self.get_prediction()
-            if prediction == "high_five":
-                keyboard.press_and_release('cmd+shift+3')
-                time.sleep(1)
+            if prediction[0] == 'high_five':
+                count+=1
+                if count>2:
+                    keyboard.press_and_release('cmd+shift+3')
+                    time.sleep(1)
+                    count=0
+            else:
+                count=0
+            print(count)
             cv2.putText(self.frame, f"Press Q to quit | Press R to refresh", (0, 20),
                         self.image_cleaner.font, self.image_cleaner.fontScale, (255, 255, 255))
             cv2.putText(self.frame, f"Prediction: {prediction}", (0, 40),
@@ -59,12 +66,12 @@ class GesturePrediction :
         roi = np.expand_dims(roi, axis=0)
         roi_copy = copy.deepcopy(roi)
         roi = np.stack((roi, roi_copy, roi_copy), axis=3)
-        prediction = self.model.predict(roi)[0]
-        if np.max(prediction) > 0.05:
-            prediction = self.inv_gestures[int(np.argmax(prediction))]
+        prediction_num = self.model.predict(roi)[0][0]
+        if prediction_num>0.7:
+            prediction = self.inv_gestures[1]
         else:
             prediction = self.inv_gestures[0]
-        return prediction
+        return prediction, 100*prediction_num
 
 
 if __name__ == '__main__':
