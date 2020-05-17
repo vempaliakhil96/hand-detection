@@ -4,6 +4,7 @@ from clean_image import CleanImage
 from keras.models import model_from_json
 import copy
 import numpy as np
+import keyboard
 
 
 class GesturePrediction :
@@ -16,8 +17,7 @@ class GesturePrediction :
         loaded_model.load_weights("model_weights.h5")
         self.model = loaded_model
         print("Loaded model from disk")
-        self.gestures = {'high_five': 1, 'victory_sign': 2, 'index_finger': 3, 'shaka_sign': 4, 'horns': 5, 'loser': 6,
-                         'null': 0}
+        self.gestures = {'high_five': 1, 'null': 0}
         self.inv_gestures = {v: k for k, v in self.gestures.items()}
         self.image_cleaner = CleanImage()
 
@@ -40,6 +40,9 @@ class GesturePrediction :
             self.image_cleaner.process()
             self.frame = self.image_cleaner.frame
             prediction = self.get_prediction()
+            if prediction == "high_five":
+                keyboard.press_and_release('cmd+shift+3')
+                time.sleep(1)
             cv2.putText(self.frame, f"Press Q to quit | Press R to refresh", (0, 20),
                         self.image_cleaner.font, self.image_cleaner.fontScale, (255, 255, 255))
             cv2.putText(self.frame, f"Prediction: {prediction}", (0, 40),
@@ -61,7 +64,6 @@ class GesturePrediction :
             prediction = self.inv_gestures[int(np.argmax(prediction))]
         else:
             prediction = self.inv_gestures[0]
-        print(prediction)
         return prediction
 
 
