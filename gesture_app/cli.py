@@ -5,6 +5,7 @@ import json
 import click
 from json.decoder import JSONDecodeError
 from utils import *
+from model.gesture_prediction import GesturePrediction 
 
 # TODO: handle relative paths. Here the assumption is that the code is being run from the root directory of app
 # Solution: https://click.palletsprojects.com/en/7.x/utils/#finding-application-folders (need to verify on other systems)
@@ -82,6 +83,18 @@ def register(ctx, name, password):
     hsv_thresholds = [[0, 0, 0], [1, 1, 1]]
     addConfig('config.hsv', json.dumps(hsv_thresholds))
     click.echo(f"User '{name}' registered successfully!")
+
+@cli.command()
+@pass_setting
+def start(ctx):
+    """Starts the application in the background"""
+    if(checkIfUserValid(ctx.name)):
+        click.echo('Please register first.')
+        exit(1)
+    click.echo('Starting.....')
+    predictor = GesturePrediction()
+    predictor.live_video()
+    click.echo('Application started successfully.')
 
 @cli.command()
 @pass_setting
