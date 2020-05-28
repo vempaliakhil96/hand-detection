@@ -4,11 +4,7 @@ import random
 import json
 import click
 from utils import *
-<<<<<<< HEAD
 from gesture_prediction import GesturePrediction
-=======
-from model.gesture_prediction import GesturePrediction 
->>>>>>> 61941f2eb63a2d88b84b078e21cf653f1e1b8e8e
 
 # TODO: handle relative paths. Here the assumption is that the code is being run from the root directory of app
 # Solution: https://click.palletsprojects.com/en/7.x/utils/#finding-application-folders (need to verify on other systems)
