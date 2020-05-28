@@ -1,6 +1,6 @@
 import cv2
 import os.path
-from clean_image import CleanImage
+from gesture_app.clean_image import CleanImage
 import time
 
 image_cleaner = CleanImage()
