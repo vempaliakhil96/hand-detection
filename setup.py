@@ -11,7 +11,7 @@ with open("README.md", "r") as f:
     readme = f.read()
 
 requires = [
-    "Click==7.0",
+    "Click==7.0"
 ]
 
 
