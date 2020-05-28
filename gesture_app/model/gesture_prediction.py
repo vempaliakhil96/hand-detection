@@ -1,32 +1,35 @@
 import cv2
 import time
-from .clean_image import CleanImage
-from keras.models import model_from_json
+from model.clean_image import CleanImage
 import copy
 import numpy as np
 import keyboard
 import os
+import tensorflow as tf
 
-class GesturePrediction :
 
-    def file_path(self, relative_path):
-        dir = os.path.dirname(os.path.abspath(__file__))
+class GesturePrediction:
+
+    @staticmethod
+    def file_path(relative_path):
+        __dir = os.path.dirname(os.path.abspath(__file__))
         split_path = relative_path.split("/")
-        new_path = os.path.join(dir, *split_path)
+        new_path = os.path.join(__dir, *split_path)
         return new_path
-        
-    def __init__(self):
-        json_file = open(self.file_path('config/model_v1-0.json'), 'r')
-        loaded_model_json = json_file.read()
-        json_file.close()
-        loaded_model = model_from_json(loaded_model_json)
-        # load weights into new model
-        loaded_model.load_weights(self.file_path('config/model_weights_v1-0.h5'))
-        self.model = loaded_model
+
+    def __init__(self, keyboard_command):
+        self.interpreter = tf.lite.Interpreter(model_path=self.file_path("config/tf_lite_model.tflite"))
+        self.interpreter.allocate_tensors()
+
+        # Get input and output tensors.
+        self.input_details = self.interpreter.get_input_details()
+        self.output_details = self.interpreter.get_output_details()
+
         print("Loaded model from disk")
         self.gestures = {'high_five': 1, 'null': 0}
         self.inv_gestures = {v: k for k, v in self.gestures.items()}
         self.image_cleaner = CleanImage()
+        self.keyboard_command = keyboard_command
 
     def live_video(self):
         t1 = time.time()
@@ -49,14 +52,13 @@ class GesturePrediction :
             self.frame = self.image_cleaner.frame
             prediction = self.get_prediction()
             if prediction[0] == 'high_five':
-                count+=1
-                if count>2:
-                    keyboard.press_and_release('cmd+shift+3')
+                count += 1
+                if count > 2:
+                    keyboard.press_and_release(self.keyboard_command)
                     time.sleep(1)
-                    count=0
+                    count = 0
             else:
-                count=0
-            print(count)
+                count = 0
             cv2.putText(self.frame, f"Press Q to quit | Press R to refresh", (0, 20),
                         self.image_cleaner.font, self.image_cleaner.fontScale, (255, 255, 255))
             cv2.putText(self.frame, f"Prediction: {prediction}", (0, 40),
@@ -72,15 +74,13 @@ class GesturePrediction :
         roi = cv2.resize(roi, (224, 224))
         roi = np.expand_dims(roi, axis=0)
         roi_copy = copy.deepcopy(roi)
-        roi = np.stack((roi, roi_copy, roi_copy), axis=3)
-        prediction_num = self.model.predict(roi)[0][0]
-        if prediction_num>0.7:
+        roi = np.stack((roi, roi_copy, roi_copy), axis=3).astype(np.float32)
+        self.interpreter.set_tensor(self.input_details[0]['index'], roi)
+        self.interpreter.invoke()
+        prediction = self.interpreter.get_tensor(self.output_details[0]['index'])
+        prediction_num = prediction[0][0]
+        if prediction_num > 0.7:
             prediction = self.inv_gestures[1]
         else:
             prediction = self.inv_gestures[0]
-        return prediction, 100*prediction_num
-
-
-# if __name__ == '__main__':
-#     predict = GesturePrediction()
-#     predict.live_video()
+        return prediction, 100 * prediction_num

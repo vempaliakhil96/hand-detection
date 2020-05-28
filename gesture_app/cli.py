@@ -3,13 +3,12 @@ import time
 import random
 import json
 import click
-from utils import *
-from gesture_prediction import GesturePrediction
+from _utils import checkIfUserValid, addConfig, getConfig, printSectionConfig
+from model.gesture_prediction import GesturePrediction
 
 # TODO: handle relative paths. Here the assumption is that the code is being run from the root directory of app
 # Solution: https://click.palletsprojects.com/en/7.x/utils/#finding-application-folders (need to verify on other systems)
 app_dir = click.get_app_dir("gesture_app")
-CONFIG_DIR_PATH = app_dir + "/config/"
 USER_PREFIX = "user."
 ACTION_PREFIX = "action."
 GESTURE_PREFIX = "gesture."
@@ -39,8 +38,10 @@ class Setting(object):
     def __init__(self):
         self.verbose = False
         self.name = "User"
-        self.password = ""
         self.hsv_thresholds = None
+        # passing default actions and gestures
+        self.gestures = ['high_five']
+        self.actions = [{'actionName': 'screenshot', 'action': 'cmd+shift+3'}]
 
 
 settings = Setting()
@@ -58,10 +59,7 @@ def cli(ctx, verbose, *args, **kwargs):
         click.echo("We are in verbose mode")
     if not os.path.exists(app_dir):
         os.makedirs(app_dir)
-    if not os.path.exists(CONFIG_DIR_PATH):
-        os.makedirs(CONFIG_DIR_PATH)
     ctx.name = getConfig(USER_PREFIX + "name")
-    ctx.password = getConfig(USER_PREFIX + "password")
     # print("Context values:" + " " + str(ctx.sname) + " "+ str(ctx.password))
 
 
@@ -70,13 +68,11 @@ def cli(ctx, verbose, *args, **kwargs):
 @cli.command()
 @click.option('-u', '--name', cls=settings_option_cls('name'), prompt='Please enter your name', help='App user.',
               type=str)
-@click.option('-p', '--password', prompt='Password', help='Password.', hide_input=True, confirmation_prompt=True)
 @pass_setting
-def register(ctx, name, password):
+def register(ctx, name):
     """Register personalised user data"""
     click.echo('Hello %s!' % name)
     addConfig(USER_PREFIX + 'name', name)
-    addConfig(USER_PREFIX + 'password', password)
 
     files = list(range(0, 5))
     # https://click.palletsprojects.com/en/7.x/utils/#showing-progress-bars
@@ -84,11 +80,17 @@ def register(ctx, name, password):
         for file in bar:
             time.sleep(random.random())
 
-    # add https://click.palletsprojects.com/en/7.x/utils/#getting-characters-from-terminal if required
+    # adding default actions during registration, user can change them by using commands later
+    for gesture in ctx.gestures:
+        key = GESTURE_PREFIX + gesture
+        addConfig(key, key)
+    for action in ctx.actions:
+        key = ACTION_PREFIX + action['actionName']
+        addConfig(key, action['action'])
+    for itr in range(len(ctx.gestures)):
+        key = MAP_PREFIX + ctx.gestures[itr]
+        addConfig(key, ctx.actions[itr]['actionName'])
 
-    # record color and generate hsv here.
-    hsv_thresholds = [[0, 0, 0], [1, 1, 1]]
-    addConfig('config.hsv', json.dumps(hsv_thresholds))
     click.echo(f"User '{name}' registered successfully!")
 
 
@@ -100,7 +102,9 @@ def start(ctx):
         click.echo('Please register first.')
         exit(1)
     click.echo('Starting.....')
-    predictor = GesturePrediction()
+    action_name = getConfig(MAP_PREFIX+ctx.gestures[0])
+    keyboard_command = getConfig(ACTION_PREFIX+action_name)
+    predictor = GesturePrediction(keyboard_command)
     predictor.live_video()
     click.echo('Application started successfully.')
 
@@ -150,11 +154,11 @@ def addgesture(ctx, gestureName):
     if checkIfUserValid(ctx.name):
         click.echo('Please register first.')
         exit(1)
-    click.echo('Adding gesture with name:{}'.format(actionName))
+    click.echo('Adding gesture with name:{}'.format(gestureName))
     # TODO: trigger model train here, and add a corresponding identifier (id) which will be used to identify this gesture in ML model
     key = GESTURE_PREFIX + gestureName
-    #  addConfig(key, id)
-    click.echo('Gesture %s added.' % gestureName)
+    addConfig(key, key)
+    click.echo(f'Gesture {gestureName} added.')
 
 
 @cli.command()
@@ -166,16 +170,9 @@ def mapActionWithGesture(ctx, actionName, gestureName):
     if checkIfUserValid(ctx.name):
         click.echo('Please register first.')
         exit(1)
-    key = MAP_PREFIX + actionName
-    addConfig(key, gestureName)
+    key = MAP_PREFIX + gestureName
+    addConfig(key, actionName)
     click.echo('Mapping Complete!')
-
-
-@cli.command()
-def start():
-    """Starts the app"""
-    predictor = GesturePrediction()
-    predictor.live_video()
 
 
 if __name__ == "__main__":
