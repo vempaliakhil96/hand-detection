@@ -84,12 +84,15 @@ def register(ctx, name):
     for gesture in ctx.gestures:
         key = GESTURE_PREFIX + gesture
         addConfig(key, key)
+        click.echo(f"Gesture {gesture} is added by default")
     for action in ctx.actions:
         key = ACTION_PREFIX + action['actionName']
         addConfig(key, action['action'])
+        click.echo(f"Action {action['actionName']} is added by default")
     for itr in range(len(ctx.gestures)):
         key = MAP_PREFIX + ctx.gestures[itr]
         addConfig(key, ctx.actions[itr]['actionName'])
+        click.echo(f"{ctx.gestures[itr]} mapped to {ctx.actions[itr]['actionName']} by default")
 
     click.echo(f"User '{name}' registered successfully!")
 
