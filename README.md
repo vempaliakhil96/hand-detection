@@ -9,13 +9,6 @@ You can simply use pip to install `hand-gesture-recognition`:
 $ pip install *INSERT*
 </pre>
 
-## How to use
-After installation just go to your cli and type
-<pre>
-python xxx.py
-</pre>
- to just use it out of the box. 
-
 ## Features
 Currently we can use the high-five gesture to trigger any keyboard command, by default it is set to 
 `cmd+shift+3` for Mac. Windows users might need to reconfigure this. Please refer API documentation
@@ -26,13 +19,18 @@ This app currently detects 1 gesture i.e high-five. We can configure trigger dif
 gesture.
 
 ###commands
+####register
+<pre>
+gesture-app register
+</pre>
+Use this to register yourself as a user and save your custom keyboard actions 
+
 ####start
 This commands starts the app with the present configuration, if no changes in app configurations have been made then
 default configuration is used.
 <pre>
 gesture-app start
 </pre>
-
 
 ####addaction
 You can add keyboard actions like so. Note: These are not mapped to trigger when gesture is recognized, they are just saved
