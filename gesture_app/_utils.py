@@ -1,9 +1,9 @@
 import click
 import os
 import configparser
+from gesture_app import GESTURE_APP_HOME
 
-app_dir = click.get_app_dir("gesture_app")
-config_file = os.path.join(app_dir, "cfg")
+config_file = os.path.join(GESTURE_APP_HOME, "cfg")
 config = configparser.ConfigParser()
 
 
@@ -46,6 +46,3 @@ def printSectionConfig(section_name):
             click.echo('  %s = %s' % (name, value))
     except configparser.NoSectionError:
         click.echo('No such configuration exists.')
-
-if __name__ == '__main__':
-    print(app_dir)

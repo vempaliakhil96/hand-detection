@@ -1,9 +1,8 @@
-keras
 cv2
 time
 opencv-python
 numpy
 setuptools
 keyboard
-tenserflow>=2.0.0
+tensorflow==2.0.0
 click

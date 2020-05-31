@@ -32,3 +32,4 @@ If there are any issues, please write to us at \
 `vempaliakhil96@gmail.com` 
 
 ## License
+This project is licensed under the Apache License, see the [LICENSE](https://github.com/vempaliakhil96/hand-detection/blob/master/LICENSE) file for details.

@@ -1,0 +1,2 @@
+include gesture_app/model/config/*
+include gesture_app/model/*

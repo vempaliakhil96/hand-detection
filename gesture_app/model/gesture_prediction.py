@@ -1,11 +1,14 @@
 import cv2
 import time
-from model.clean_image import CleanImage
+from gesture_app.model.clean_image import CleanImage
 import copy
 import numpy as np
 import keyboard
 import os
 import tensorflow as tf
+import importlib.resources as pkg_resources
+import warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 
 class GesturePrediction:
@@ -18,7 +21,7 @@ class GesturePrediction:
         return new_path
 
     def __init__(self, keyboard_command):
-        self.interpreter = tf.lite.Interpreter(model_path=self.file_path("config/tf_lite_model.tflite"))
+        self.interpreter = tf.lite.Interpreter(model_path=self.file_path("tf_lite_model.tflite"))
         self.interpreter.allocate_tensors()
 
         # Get input and output tensors.
