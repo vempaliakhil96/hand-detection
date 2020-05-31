@@ -20,4 +20,4 @@ __url__ = "https://github.com/vempaliakhil96/hand-detection"
 __version__ = generate_version(VERSION, prerelease=PRERELEASE, revision=REVISION)
 __author__ = "Akhil Vempali"
 __author_email__ = "vempaliakhil96@gmail.com"
-# __license__ = "Apache 2.0"
+__license__ = "Apache 2.0"

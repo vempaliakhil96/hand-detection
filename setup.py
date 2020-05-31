@@ -25,6 +25,7 @@ def setup_package():
         url=about["__url__"],
         author=about["__author__"],
         author_email=about["__author_email__"],
+        license=about["__license__"],
         packages=find_packages(exclude=("tests",)),
         install_requires=requires,
         entry_points={"console_scripts": ["gesture-app = gesture_app.cli:cli"]},
@@ -32,7 +33,6 @@ def setup_package():
             # Trove classifiers
             # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers
             "License :: OSI Approved :: Apache Software License",
-            "Programming Language :: Python :: 3.5",
             "Programming Language :: Python :: 3.6",
             "Programming Language :: Python :: 3.7",
         ],

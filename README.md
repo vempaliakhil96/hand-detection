@@ -15,3 +15,4 @@ $ pip install *INSERT*
 ## TroubleShooting
 
 ## License
+This project is licensed under the Apache License, see the [LICENSE](https://github.com/vempaliakhil96/hand-detection/blob/master/LICENSE) file for details.
