@@ -3,12 +3,12 @@ import time
 import random
 import json
 import click
-from _utils import checkIfUserValid, addConfig, getConfig, printSectionConfig
-from model.gesture_prediction import GesturePrediction
+from gesture_app import GESTURE_APP_HOME
+from gesture_app._utils import checkIfUserValid, addConfig, getConfig, printSectionConfig
+from gesture_app.model.gesture_prediction import GesturePrediction
 
 # TODO: handle relative paths. Here the assumption is that the code is being run from the root directory of app
 # Solution: https://click.palletsprojects.com/en/7.x/utils/#finding-application-folders (need to verify on other systems)
-app_dir = click.get_app_dir("gesture_app")
 USER_PREFIX = "user."
 ACTION_PREFIX = "action."
 GESTURE_PREFIX = "gesture."
@@ -57,8 +57,6 @@ def cli(ctx, verbose, *args, **kwargs):
     """the app to make your life easy by identifying hand getsures"""
     if verbose:
         click.echo("We are in verbose mode")
-    if not os.path.exists(app_dir):
-        os.makedirs(app_dir)
     ctx.name = getConfig(USER_PREFIX + "name")
     # print("Context values:" + " " + str(ctx.sname) + " "+ str(ctx.password))
 
