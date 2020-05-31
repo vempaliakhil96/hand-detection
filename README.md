@@ -15,24 +15,24 @@ Currently we can use the high-five gesture to trigger any keyboard command, by d
 on how to use the various commands.
 
 ## How to use
-This app currently detects 1 gesture i.e high-five. We can configure trigger diferent keyboard inputs to this
-gesture.
+This app currently detects 1 gesture i.e high-five. We can configure trigger diferent keyboard inputs to this gesture.
 
-###commands
-####register
+### commands
+
+#### register
 <pre>
 gesture-app register
 </pre>
 Use this to register yourself as a user and save your custom keyboard actions 
 
-####start
+#### start
 This commands starts the app with the present configuration, if no changes in app configurations have been made then
 default configuration is used.
 <pre>
 gesture-app start
 </pre>
 
-####addaction
+#### addaction
 You can add keyboard actions like so. Note: These are not mapped to trigger when gesture is recognized, they are just saved
 in config file for later use.\
 `-a`: Name of the action\
@@ -41,18 +41,19 @@ in config file for later use.\
 gesture-app addaction -a "copy text" -s "cmd+shift+3"
 </pre>
 
-####showaction
+#### showaction
 To display all the actions that are currently present in config use the following
 <pre>
 gesture-app showactions
 </pre>
 
-####showgesture
+#### showgesture
 You can use this to get gesture names that are currently present.
 <pre>
 gesture-app showgestures
 </pre>
-####mapActionWithGesture
+
+#### mapActionWithGesture
 `-a`: Name of the action\
 `-g`:Name of gesture\
 Please note that the action name should already be 
