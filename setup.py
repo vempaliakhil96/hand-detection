@@ -10,7 +10,7 @@ with open(os.path.join(here, "gesture_app", "__version__.py"), "r") as f:
 with open("README.md", "r") as f:
     readme = f.read()
 
-requires = ["Click==7.0", "opencv-python==4.2.0.34", "tensorflow==2.0.0", "keyboard==0.13.5", "numpy==1.18.4"]
+requires = ["Click==7.0", "opencv-python==4.1.0.25", "tensorflow==2.0.0", "keyboard==0.13.5", "numpy==1.18.4"]
 
 
 def setup_package():
