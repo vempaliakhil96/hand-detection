@@ -1,12 +1,12 @@
-## hand-gesture-recognition
+## gesture-app
 
 [![image](https://img.shields.io/pypi/pyversions/conference-radar.svg)](https://github.com/vempaliakhil96/hand-detection)
 
 ## Installation
-You can simply use pip to install `hand-gesture-recognition`:
+You can simply use pip to install `gesture-app`:
 
 <pre>
-$ pip install *INSERT*
+$ pip install gesture-app
 </pre>
 
 ## Features
