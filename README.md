@@ -1,4 +1,4 @@
-## gesture-task-app
+## Hand Gesture Tasker Application
 
 [![image](https://img.shields.io/pypi/pyversions/conference-radar.svg)](https://github.com/vempaliakhil96/hand-detection)
 
