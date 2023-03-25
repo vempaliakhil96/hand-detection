@@ -4,5 +4,5 @@ opencv-python
 numpy
 setuptools
 keyboard
-tensorflow==2.0.1
+tensorflow==2.11.1
 click
